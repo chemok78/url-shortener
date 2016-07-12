@@ -3,6 +3,8 @@
 //require packages
 var express = require('express');
 var app = express();
+require('dotenv').config();
+//use .env to set environment variables
 var bodyParser = require('body-parser');
 var api = require('./api/shortener.js');
 //var api set to the shortener.js file
@@ -14,7 +16,7 @@ var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 
 //MongoDB connection URL, where the database is running on mLab
-var url = 'mongodb://jayjay:abcd1234@ds013574.mlab.com:13574/urls';
+var url = process.env.DB_URL;
 
 //use connect method to connect to mongoDB server
 MongoClient.connect(url, function(err,db){
