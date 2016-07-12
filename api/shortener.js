@@ -11,7 +11,6 @@ module.exports = function(app){
        
        res.send({"original_url": request.url});
        
-       
        //shorten the url
        
        //save the relationship between original url and shortened url in database
