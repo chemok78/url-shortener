@@ -24,12 +24,6 @@ api(app);
 routes(app);
 //call routes module file with our app as a parameter
 
-/*app.get('/', function(req,res){
-//set up root route    
-   res.render;
-    
-});*/
-
 app.listen(port,function(){
 //create server   
    
