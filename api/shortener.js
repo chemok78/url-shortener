@@ -11,6 +11,7 @@ module.exports = function(app) {
 
   //MongoDB connection URL, where the database is running on mLab
   var url = process.env.DB_URL;
+  
 
   //use connect method to connect to mongoDB server
   MongoClient.connect(url, function(err, db) {
