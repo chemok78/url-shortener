@@ -9,6 +9,7 @@
   "author": "Jay Mok",
   "license": "ISC",
   "dependencies": {
+    "assert": "^1.4.1",
     "body-parser": "^1.15.2",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",

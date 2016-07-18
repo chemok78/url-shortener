@@ -9,7 +9,6 @@ var bodyParser = require('body-parser');
 var api = require('./api/shortener.js');
 //var api set to the shortener.js file
 var routes = require('./routes/index.js');
-var router = express.Router();
 
 //configuration for bodyParser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +25,7 @@ routes(app);
 
 app.get('/', function(req,res){
     
-   res.render 
+   res.render;
     
 });
 

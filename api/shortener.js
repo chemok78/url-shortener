@@ -4,6 +4,8 @@
 module.exports = function(app) {
 
   var mongodb = require('mongodb');
+  
+  var assert = require('assert');
 
   //We need to work with "MongoClient" interface in order to connect to a mongodb server.
   //Using MongoDB's native 
@@ -11,7 +13,6 @@ module.exports = function(app) {
 
   //MongoDB connection URL, where the database is running on mLab
   var url = process.env.DB_URL;
-
 
   //use connect method to connect to mongoDB server
   MongoClient.connect(url, function(err, db) {
@@ -27,7 +28,6 @@ module.exports = function(app) {
       //do something with the database here
 
       app.get("/new/:url(*)", function(req, res) {
-
 
         var request = req.params.url;
 
@@ -106,9 +106,65 @@ module.exports = function(app) {
 
         }
 
-      });
+      }); // app.get
+      
+      /*var findEntry = function(db,callback,urlNumber){
+        
+        var cursor = db.collection('tinyurls').findOne({index:urlNumber});
+        
+        cursor.each(function(err,doc){
+        
+          assert.equal(err,null);
+          
+          if(doc != null){
+            
+            console.dir(doc);
+            
+          } else {
+            
+            callback();
+            
+          }
+          
+        });
+        
+      }*/
 
 
+      app.get('/:index', function(req,res){
+        
+        var urlNumber = req.params.index;
+        
+        var collection = db.collection('tinyurls');
+        
+        var query = {};
+        
+        var index = "index";
+        
+        query.index = parseInt(urlNumber);
+        
+        collection.findOne(query, function(err,document){
+          
+          if(err){
+            
+            console.log(err);
+            
+          } else {
+          
+            var redirectUrl = document.original_url;
+            
+            console.log(redirectUrl);
+            
+           res.redirect(redirectUrl);
+           
+          
+          }
+          
+        });
+      
+        
+      }); // app.get : index
+      
     }
 
   }); //Mongoclient.connect;
