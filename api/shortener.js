@@ -4,11 +4,9 @@
 module.exports = function(app) {
 
   var mongodb = require('mongodb');
-  
-  var assert = require('assert');
 
-  //We need to work with "MongoClient" interface in order to connect to a mongodb server.
-  //Using MongoDB's native 
+  //"MongoClient" interface in order to connect to a mongodb server.
+  //Using MongoDB's native driver
   var MongoClient = mongodb.MongoClient;
 
   //MongoDB connection URL, where the database is running on mLab
@@ -25,35 +23,36 @@ module.exports = function(app) {
 
       console.log('Connection established to', url);
 
-      //do something with the database here
-
       app.get("/new/:url(*)", function(req, res) {
-
+      //setup route with url as parameter
+      //(*) makes sure the // in http:// are escaped and not start of a path
+      
         var request = req.params.url;
+        //save parameter url a variable request
 
         if (/^https?:\/\//.test(request) === true) {
+        //parameter must start with http:// or https://
 
           var collection = db.collection('tinyurls');
-
-          var amount = 0;
-
-          var num = 0;
+          //load the tinyurls collection
 
           var tinyUrl = {};
+          //initialize a tinyURL object with original URL and short URL and index set to a number
 
           collection.count(function(err, result) {
-
+          //count how many documents the tinyurls collection now has and save the number as result
+          
             if (err) {
 
               console.log(err);
 
             } else {
 
-              amount = result;
-
-              var num = amount + 1;
+              var num = result + 1;
+              //initializ a number variable to use as ID parameter for short URL
 
               var shortUrl = process.env.APP_URL + num;
+              //append number to APP URL as short url
 
               tinyUrl = {
 
@@ -66,6 +65,7 @@ module.exports = function(app) {
               }
 
               collection.insert(tinyUrl, function(err, result) {
+              //insert the short URL object in database
 
                 if (err) {
 
@@ -84,6 +84,7 @@ module.exports = function(app) {
 
 
               res.json({
+              //render the original URL and short URL as JSON Object
                   
                 "original_url": request,
                 
@@ -92,59 +93,44 @@ module.exports = function(app) {
               });
 
 
-            } //end if/else
+            } 
 
 
-          }); //collection.count
+          }); 
 
 
         } else {
 
           res.json({
+          //if URL does not start with http:// or https:// then render this message
             "error": "Wrong url format, make sure you have a valid protocol and real site."
           });
 
         }
 
-      }); // app.get
-      
-      /*var findEntry = function(db,callback,urlNumber){
-        
-        var cursor = db.collection('tinyurls').findOne({index:urlNumber});
-        
-        cursor.each(function(err,doc){
-        
-          assert.equal(err,null);
-          
-          if(doc != null){
-            
-            console.dir(doc);
-            
-          } else {
-            
-            callback();
-            
-          }
-          
-        });
-        
-      }*/
+      }); 
 
 
       app.get('/:index', function(req,res){
+      //dynamic route with index number as short URL. Checks if exists in database and redirects to original URL
         
         var urlNumber = req.params.index;
+        //get the parameter
         
         var collection = db.collection('tinyurls');
+        //connect with collection tinyurls
         
         var query = {};
+        //intialize a query object to work with DB
         
         var index = "index";
+        //set index to string index
         
         query.index = parseInt(urlNumber);
+        //query.index = parameter
         
         collection.findOne(query, function(err,document){
-          
+        //find the one and only entry in DB that matches index number
           if(err){
             
             console.log(err);
@@ -153,13 +139,10 @@ module.exports = function(app) {
           
           if(document){
             
-            var redirectUrl = document.original_url;
             
-          console.log(redirectUrl);
-            
-           res.redirect(redirectUrl);
+            res.redirect(document.original_url);
+            //redirect to original URL
            
-            
           } else {
             
             
@@ -171,11 +154,11 @@ module.exports = function(app) {
         });
       
         
-      }); // app.get : index
+      }); 
       
     }
 
-  }); //Mongoclient.connect;
+  }); 
 
 
-}; //module.exports
+}; 

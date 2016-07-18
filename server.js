@@ -3,11 +3,12 @@
 //require packages
 var express = require('express');
 var app = express();
-require('dotenv').config();
 //use .env to set environment variables
+require('dotenv').config();
 var bodyParser = require('body-parser');
-var api = require('./api/shortener.js');
 //var api set to the shortener.js file
+var api = require('./api/shortener.js');
+// var routes set to the index.js routes file
 var routes = require('./routes/index.js');
 
 //configuration for bodyParser
@@ -23,11 +24,11 @@ api(app);
 routes(app);
 //call routes module file with our app as a parameter
 
-app.get('/', function(req,res){
-    
+/*app.get('/', function(req,res){
+//set up root route    
    res.render;
     
-});
+});*/
 
 app.listen(port,function(){
 //create server   
