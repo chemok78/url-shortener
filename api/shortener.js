@@ -149,16 +149,24 @@ module.exports = function(app) {
             
             console.log(err);
             
-          } else {
+          };
           
+          if(document){
+            
             var redirectUrl = document.original_url;
             
-            console.log(redirectUrl);
+          console.log(redirectUrl);
             
            res.redirect(redirectUrl);
            
-          
+            
+          } else {
+            
+            
+            res.send("Sorry, we don't recognize that url");
+            
           }
+          
           
         });
       
